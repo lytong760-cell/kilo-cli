@@ -7,6 +7,7 @@ import { BoardReadTool, BoardPostTool } from "./board"
 import { BrowserOpenTool } from "./browser-open"
 import { CancelWakeupTool } from "./cancel-wakeup"
 import { ChartTool } from "./chart"
+import { DesignTool } from "../session/design/tool"
 import { GenerateImageTool } from "./generate-image"
 import { NotebookEditTool, NotebookExecuteTool, NotebookReadTool } from "./notebook-host"
 import { MemoryRecallTool } from "./memory-recall"
@@ -83,6 +84,7 @@ export namespace KiloToolRegistry {
       const process = yield* BackgroundProcessTool
       const browser = Flag.KILO_CLIENT === "vscode" ? yield* BrowserOpenTool : undefined
       const chart = yield* ChartTool
+      const design = yield* DesignTool
       const image = yield* GenerateImageTool
       // The notify_user tool depends on KiloSessions.Service, which the tool-registry layer provides
       // via KiloSessions.defaultLayer (see src/tool/registry.ts). Grabs the service from the surrounding
@@ -131,6 +133,7 @@ export namespace KiloToolRegistry {
         process,
         browser,
         chart,
+        design,
         image,
         notify,
         openPlan,
@@ -155,6 +158,7 @@ export namespace KiloToolRegistry {
       process: Tool.Info
       browser?: Tool.Info
       chart: Tool.Info
+      design: Tool.Info
       image: Tool.Info
       notify: Tool.Info
       openPlan?: Tool.Info
@@ -180,6 +184,7 @@ export namespace KiloToolRegistry {
         manager: Tool.init(tools.manager),
         process: Tool.init(tools.process),
         chart: Tool.init(tools.chart),
+        design: Tool.init(tools.design),
         image: Tool.init(tools.image),
         notify: Tool.init(tools.notify),
         send: Tool.init(tools.send),
@@ -214,6 +219,7 @@ export namespace KiloToolRegistry {
         cancel,
         notify: base.notify,
         send: base.send,
+        design: base.design,
       }
     })
   }

@@ -4,7 +4,7 @@
 //
 // Kept in a side-effect-free module so it can be imported from the server
 // (`session/prompt.ts`) without pulling in CLI dependencies.
-export const BUILTIN_COMMANDS = ["compact", "summarize"] as const
+export const BUILTIN_COMMANDS = ["compact", "summarize", "design"] as const
 
 export type BuiltinCommand = (typeof BUILTIN_COMMANDS)[number]
 

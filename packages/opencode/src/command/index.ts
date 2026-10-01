@@ -50,6 +50,7 @@ export function hints(template: string) {
 export const Default = {
   INIT: "init",
   REVIEW: "review",
+  DESIGN: "design",
 } as const
 
 export interface Interface {
@@ -122,6 +123,13 @@ const layer = Layer.effect(
         template: "$ARGUMENTS",
         hints: ["<objective | pause | resume | clear>"],
       }
+      commands[Default.DESIGN] = {
+        name: Default.DESIGN,
+        description: "Generate design artifacts (prototypes, landing pages, dashboards) from natural-language briefs with browser preview and export support",
+        source: "command",
+        template: "$ARGUMENTS",
+        hints: ["<brief | create | refine | export | open | preview>"],
+      }
       commands["resume-claude"] = SessionResume.resumeClaude
       commands["resume-codex"] = SessionResume.resumeCodex
       // kilocode_change end
@@ -131,12 +139,15 @@ const layer = Layer.effect(
       for (const [name, command] of Object.entries(cfg.command ?? {})) {
         if (name === "goal")
           throw new Error("The /goal command is reserved for session goals. Rename the custom command.")
+        if (name === Default.DESIGN)
+          throw new Error(`The /${Default.DESIGN} command is reserved for design tasks. Rename the custom command.`)
         if (!applyOverride(commands, name, command, hints)) overrides.push({ name, command }) // kilocode_change
       }
       // kilocode_change end
 
       for (const [name, prompt] of Object.entries(yield* mcp.prompts())) {
         if (name === "goal") throw new Error("The /goal command is reserved for session goals. Rename the MCP prompt.") // kilocode_change
+        if (name === Default.DESIGN) throw new Error(`The /${Default.DESIGN} command is reserved for design tasks. Rename the MCP prompt.`) // kilocode_change
         commands[name] = {
           name,
           source: "mcp",

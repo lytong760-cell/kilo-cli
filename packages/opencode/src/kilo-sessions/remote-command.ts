@@ -113,6 +113,12 @@ export namespace RemoteCommand {
     hints: [],
   }
 
+  const design: Info = {
+    name: "design",
+    description: "generate a design artifact from a brief",
+    hints: [],
+  }
+
   const exit: Info = {
     name: "exit",
     description: "Exit the CLI",
@@ -136,6 +142,8 @@ export namespace RemoteCommand {
     const encoder = new TextEncoder()
     const measure = (value: unknown) => encoder.encode(JSON.stringify(value)).byteLength
     const required = [commands.find((item) => item.name === compact.name) ?? compact]
+    const designEntry = commands.find((item) => item.name === design.name)
+    if (designEntry) required.push(designEntry)
     const processExit = commands.find((item) => item.name === exit.name)
     if (processExit) required.push(processExit)
     const selected: Info[] = [...required]
